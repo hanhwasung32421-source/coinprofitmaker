@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calcu Screenshot Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css?v=15" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="preview">
+        <div class="canvas-wrap">
+          <canvas id="cardCanvas" width="462" height="354"></canvas>
+        </div>
+        <div class="hint">
+          다운로드가 안 되면 파일을 더블클릭해서 여는 대신, 아래 “서버 실행(권장)” 방식으로 실행하세요.
+        </div>
+
+        <div class="generate-wrap">
+          <button id="btnGenerate" class="primary" type="button">생성</button>
+          <div class="generate-hint">오른쪽에서 “생성 개수”를 입력한 뒤 생성 버튼을 누르세요.</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <h1>숫자 수정</h1>
+
+        <div class="grid">
+          <label>
+            수익률 최소
+            <input id="inpPercentMin" type="text" value="20" />
+          </label>
+
+          <label>
+            수익률 최대
+            <input id="inpPercentMax" type="text" value="25" />
+          </label>
+
+          <label>
+            최소 수익금 (만원)
+            <input id="inpProfitMin" type="text" value="300" />
+          </label>
+
+          <label>
+            최대 수익금 (만원)
+            <input id="inpProfitMax" type="text" value="1000" />
+          </label>
+
+          <label>
+            종목(Stock) 텍스트
+            <input id="inpSymbol" type="text" value="DOGE/USDT" />
+          </label>
+
+          <label>
+            포지션(LONG/SHORT)
+            <div class="side-toggle" role="group" aria-label="포지션 선택">
+              <button id="btnSideLong" class="secondary side-btn" type="button">LONG</button>
+              <button id="btnSideShort" class="secondary side-btn" type="button">SHORT</button>
+              <input id="inpSide" type="hidden" value="" />
+            </div>
+          </label>
+
+          <label>
+            기준진입가 / 실제진입가(자동)
+            <div class="dual-input">
+              <input id="inpEntry" type="text" value="0.11445" />
+              <input id="inpEntryReal" type="text" value="0.11445" disabled />
+            </div>
+          </label>
+
+          <label>
+            청산가(Exit Price, 자동)
+            <input id="inpExit" type="text" value="0.00000" disabled />
+          </label>
+
+          <label>
+            레버리지
+            <input id="inpLeverage" type="text" value="100x" />
+          </label>
+
+          <label>
+            배경 확대/축소 (0.80~1.20 권장, 1.00=기본)
+            <input id="inpBgZoom" type="number" step="0.01" min="0.5" max="2" value="1.00" />
+          </label>
+
+          <div class="bg-move span-3">
+            <div class="bg-move-row">
+              <button id="btnShiftUp" class="secondary" type="button">위 1px</button>
+            </div>
+            <div class="bg-move-row">
+              <button id="btnShiftLeft" class="secondary" type="button">왼쪽 1px</button>
+              <button id="btnShiftReset" class="secondary" type="button">원점</button>
+              <button id="btnShiftRight" class="secondary" type="button">오른쪽 1px</button>
+            </div>
+            <div class="bg-move-row">
+              <button id="btnShiftDown" class="secondary" type="button">아래 1px</button>
+            </div>
+          </div>
+
+          <details class="tuning span-3" open>
+            <summary>텍스트 미세조정(항목별 1px 이동)</summary>
+            <div class="pick-hint">각 항목별로 “위/왼쪽/원점/오른쪽/아래” 버튼으로 1px씩 이동할 수 있습니다.</div>
+
+            <div class="text-move-list">
+              <!-- 상단 -->
+              <div class="text-move-row">
+                <div class="text-move-name">수익률 숫자</div>
+                <div class="text-move-pad" data-text-id="percentNum">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-move-row">
+                <div class="text-move-name">%</div>
+                <div class="text-move-pad" data-text-id="percentSign">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-move-row">
+                <div class="text-move-name">수익금</div>
+                <div class="text-move-pad" data-text-id="profit">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 섹션 -->
+              <div class="text-move-row">
+                <div class="text-move-name">Stock 라벨</div>
+                <div class="text-move-pad" data-text-id="stockLabel">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-move-row">
+                <div class="text-move-name">DOGE/USDT 값</div>
+                <div class="text-move-pad" data-text-id="stockValue">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-move-row">
+                <div class="text-move-name">LONG/SHORT</div>
+                <div class="text-move-pad" data-text-id="side">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-move-row">
+                <div class="text-move-name">Leverage 라벨</div>
+                <div class="text-move-pad" data-text-id="leverageLabel">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-move-row">
+                <div class="text-move-name">100x 값</div>
+                <div class="text-move-pad" data-text-id="leverageValue">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-move-row">
+                <div class="text-move-name">Entry 라벨</div>
+                <div class="text-move-pad" data-text-id="entryLabel">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-move-row">
+                <div class="text-move-name">Entry 값</div>
+                <div class="text-move-pad" data-text-id="entryValue">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-move-row">
+                <div class="text-move-name">Exit 라벨</div>
+                <div class="text-move-pad" data-text-id="exitLabel">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+              <div class="text-move-row">
+                <div class="text-move-name">Exit 값</div>
+                <div class="text-move-pad" data-text-id="exitValue">
+                  <button class="secondary text-move-btn" data-dir="up" type="button">위 1px</button>
+                  <div class="text-move-mid">
+                    <button class="secondary text-move-btn" data-dir="left" type="button">왼쪽 1px</button>
+                    <button class="secondary text-move-reset" type="button">원점</button>
+                    <button class="secondary text-move-btn" data-dir="right" type="button">오른쪽 1px</button>
+                  </div>
+                  <button class="secondary text-move-btn" data-dir="down" type="button">아래 1px</button>
+                  <div class="text-size-mid">
+                    <button class="secondary text-size-btn" data-size="down" type="button">글씨 -</button>
+                    <button class="secondary text-size-btn" data-size="up" type="button">글씨 +</button>
+                  </div>
+                  <div class="text-style-mid">
+                    <button class="secondary text-bold-btn" type="button">볼드</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tuning-grid">
+              <!-- 기본 글자 크기 섹션 삭제(항목별 버튼으로 조절) -->
+          </details>
+
+
+          <label>
+            생성 개수
+            <input id="inpCount" type="number" min="1" step="1" value="1" />
+          </label>
+
+          <label>
+            파일명 접두사
+            <input id="inpPrefix" type="text" value="screenshot" />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="btnDownloadZip" class="primary" type="button">ZIP로 대량 생성</button>
+          <button id="btnReroll" class="secondary" type="button">랜덤 갱신</button>
+          <button id="btnReset" class="secondary" type="button">기본값</button>
+        </div>
+
+        <details class="howto">
+          <summary>서버 실행(권장)</summary>
+          <ol>
+            <li>터미널을 엽니다.</li>
+            <li>
+              아래 중 하나를 실행합니다 (절대경로 포함):
+              <ul>
+                <li><code>python -m http.server 8000 --directory c:\trae</code></li>
+                <li><code>py -m http.server 8000 --directory c:\trae</code></li>
+              </ul>
+            </li>
+            <li>브라우저에서 <code>http://localhost:8000/index.html</code> 로 접속합니다.</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+
+    <!-- 최초 진입 시 LONG/SHORT 강제 선택 -->
+    <div id="sideModal" class="modal-overlay" aria-modal="true" role="dialog" aria-label="포지션 선택">
+      <div class="modal">
+        <div class="modal-title">포지션을 선택하세요</div>
+        <div class="modal-actions">
+          <button id="modalSideLong" class="primary modal-btn" type="button">LONG</button>
+          <button id="modalSideShort" class="danger modal-btn" type="button">SHORT</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="./app.js?v=33"></script>
+  </body>
+</html>

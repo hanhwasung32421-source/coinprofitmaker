@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "saved_at": 1778737684,
+  "slots": [
+    {
+      "hwnd": 199354,
+      "title": "(9) ‎주식 황금어장✨ – (7760)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 6684,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (11)\\Telegram.exe"
+    },
+    {
+      "hwnd": 12257502,
+      "title": "(7) ‎주식 황금어장✨ @ ‎김 덕배 (161)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 13648,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (12 13)\\Telegram.exe"
+    },
+    {
+      "hwnd": 1444854,
+      "title": "(4) ‎주식 황금어장✨ @ ‎김 진숙 (161)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 13648,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (12 13)\\Telegram.exe"
+    },
+    {
+      "hwnd": 2165048,
+      "title": "(3) ‎주식 황금어장✨ @ ‎mr.bae (1630)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 10888,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (14 15)\\Telegram.exe"
+    },
+    {
+      "hwnd": 29232038,
+      "title": "‎주식 황금어장✨ @ ‎류 승태 (1630)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 10888,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (14 15)\\Telegram.exe"
+    },
+    {
+      "hwnd": 265330,
+      "title": "(14) ‎주식 황금어장✨ – (137)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 4892,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (16)\\Telegram.exe"
+    },
+    {
+      "hwnd": 265124,
+      "title": "(12) ‎주식 황금어장✨ – (132)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 17332,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (17)\\Telegram.exe"
+    },
+    {
+      "hwnd": 2034940,
+      "title": "(10) ‎주식 황금어장✨ – (128)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 18820,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (18)\\Telegram.exe"
+    },
+    {
+      "hwnd": 2034846,
+      "title": "‎주식 황금어장✨ – (108)",
+      "class": "Qt51518QWindowIcon",
+      "pid": 15164,
+      "exe": "C:\\Users\\m5\\Desktop\\멀티텔레그램\\Telegram - new (19)\\Telegram.exe"
+    },
+    {
+      "hwnd": 131144,
+      "title": "스티커 메모",
+      "class": "ApplicationFrameWindow",
+      "pid": 11036,
+      "exe": "C:\\Windows\\System32\\ApplicationFrameHost.exe"
+    }
+  ]
+}

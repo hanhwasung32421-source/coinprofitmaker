@@ -1,0 +1,4 @@
+pywin32>=306
+pynput>=1.7.7
+PyQt6>=6.6.0
+pyvda>=0.4.3

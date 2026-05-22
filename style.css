@@ -1,0 +1,416 @@
+:root{
+  --bg:#0b0f17;
+  --panel:#111826;
+  --text:#e7eefc;
+  --muted:rgba(231,238,252,.65);
+  --accent:#0abf7f;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.app{
+  display:grid;
+  /* 왼쪽(미리보기)은 고정 폭으로 해서, 넓은 화면에서 생기는 '중간 빈 공간'을 없앱니다. */
+  grid-template-columns: 520px 600px;
+  justify-content:start;
+  gap:24px;
+  padding:24px;
+  align-items:start;
+}
+
+.preview{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  position: sticky;
+  top: 16px;
+  align-self: start;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+}
+
+.canvas-wrap{
+  width: fit-content;
+  padding:16px;
+  background:#0e1522;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+}
+
+canvas{
+  display:block;
+  border-radius:8px;
+  cursor: crosshair;
+}
+
+.hint{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.4;
+}
+
+.generate-wrap{
+  padding:14px 16px;
+  background:#0e1522;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  display:grid;
+  gap:10px;
+}
+
+.generate-wrap button{
+  width: fit-content;
+}
+
+.generate-hint{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.pick-hint{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.4;
+}
+
+.selected-box{
+  margin-top:10px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#0c1220;
+}
+
+.selected-title{
+  font-weight:700;
+  color:#d8e6ff;
+  margin-bottom:6px;
+}
+
+.selected-name{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.selected-controls{
+  display:grid;
+  gap:10px;
+}
+
+label.mini{
+  display:grid;
+  gap:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.selected-actions{
+  margin-top:10px;
+}
+
+.text-move-list{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:10px;
+}
+
+.text-move-row{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#0c1220;
+}
+
+.text-move-name{
+  color:#d8e6ff;
+  font-weight:700;
+  font-size:12px;
+}
+
+.text-move-pad{
+  display:grid;
+  gap:8px;
+  justify-items:center;
+}
+
+.text-move-pad button{
+  padding:8px 10px;
+  font-size:12px;
+}
+
+.text-move-mid{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+}
+
+.text-size-mid{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+}
+
+.text-style-mid{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+}
+
+.text-bold-btn.active{
+  background: rgba(10,191,127,.16);
+  border-color: rgba(10,191,127,.45);
+}
+
+.controls{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:18px;
+  position:sticky;
+  top:16px;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  width:600px;
+  min-width:600px;
+  max-width:600px;
+}
+
+.controls h1{
+  margin:0 0 14px 0;
+  font-size:18px;
+  font-weight:700;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:12px;
+}
+
+label{
+  display:grid;
+  gap:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+label input, label select{
+  width:100%;
+}
+
+.side-toggle{
+  display:flex;
+  gap:8px;
+}
+
+.side-btn{
+  flex:1;
+  padding:10px 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#0c1220;
+  color:var(--text);
+  font-size:14px;
+}
+
+.side-btn.active{
+  background: rgba(10,191,127,.18);
+  border-color: rgba(10,191,127,.55);
+}
+
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.62);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 10000;
+}
+
+.modal{
+  width: min(520px, calc(100vw - 32px));
+  padding: 18px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: #0e1522;
+  box-shadow: 0 16px 50px rgba(0,0,0,.55);
+}
+
+.modal-title{
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #d8e6ff;
+}
+
+.modal-actions{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.modal-btn{
+  padding: 14px 12px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 12px;
+}
+
+.danger{
+  background: rgba(250,75,75,.18);
+  border: 1px solid rgba(250,75,75,.45);
+  color: #ffd8d8;
+}
+
+.modal-overlay.hidden{
+  display:none;
+}
+
+.dual-input{
+  display:flex;
+  gap:8px;
+}
+
+.dual-input > input{
+  flex:1;
+}
+
+.span-3{
+  grid-column: 1 / -1;
+}
+
+input, select{
+  width:100%;
+  padding:10px 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#0c1220;
+  color:var(--text);
+  font-size:14px;
+  outline:none;
+}
+
+input:disabled{
+  background:#2a2f3a;
+  border-color: rgba(255,255,255,.10);
+  color: rgba(231,238,252,.78);
+}
+
+input:focus, select:focus{
+  border-color:rgba(10,191,127,.7);
+  box-shadow:0 0 0 3px rgba(10,191,127,.12);
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:14px;
+}
+
+button{
+  cursor:pointer;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  padding:10px 12px;
+  font-size:14px;
+  color:var(--text);
+  background:#0c1220;
+}
+
+button.primary{
+  background: rgba(10,191,127,.16);
+  border-color: rgba(10,191,127,.45);
+}
+
+button.secondary{
+  background:#0c1220;
+}
+
+.bg-move{
+  display:grid;
+  gap:8px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#0c1220;
+}
+
+.bg-move-row{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+}
+
+.bg-move-row button{
+  padding:8px 10px;
+  font-size:12px;
+}
+
+.tuning{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.tuning-grid{
+  margin-top:10px;
+  display:grid;
+  gap:10px;
+}
+
+.tuning-head{
+  font-weight:700;
+  color:#d8e6ff;
+}
+
+.tuning-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.tuning-row input{
+  width:120px;
+}
+
+.tuning-step{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.tuning-step input{
+  width:90px;
+  text-align:center;
+}
+
+.tune-bump{
+  padding:8px 10px;
+  font-size:12px;
+}
+
+.howto{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.howto code{
+  color:#d8e6ff;
+}

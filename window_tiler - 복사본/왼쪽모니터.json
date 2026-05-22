@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "saved_at": 1778737394,
+  "slots": [
+    {
+      "hwnd": 335980,
+      "title": "11.txt - 메모장",
+      "class": "Notepad",
+      "pid": 41912,
+      "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2512.29.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe"
+    },
+    {
+      "hwnd": 4134092,
+      "title": "22.txt - 메모장",
+      "class": "Notepad",
+      "pid": 41912,
+      "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2512.29.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe"
+    },
+    {
+      "hwnd": 4333356,
+      "title": "33.txt - 메모장",
+      "class": "Notepad",
+      "pid": 41912,
+      "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2512.29.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe"
+    },
+    {
+      "hwnd": 47976404,
+      "title": "44.txt - 메모장",
+      "class": "Notepad",
+      "pid": 41912,
+      "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2512.29.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe"
+    },
+    {
+      "hwnd": 27401916,
+      "title": "55.txt - 메모장",
+      "class": "Notepad",
+      "pid": 41912,
+      "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2512.29.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe"
+    },
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
